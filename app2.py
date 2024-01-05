@@ -85,7 +85,6 @@ with tab1:
     # Data check if Null stop
     if data.isnull().sum().sum() > 0:
         st.warning('⚠️ Please fill in all the data.')
-        st.stop()
     
         
     # Predict Button
