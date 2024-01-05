@@ -1,16 +1,22 @@
+# Import Libraries
 import streamlit as st
 import pickle as pkl
 import pandas as pd
 
-# Page Setup
+# ====== Page Setup ======
+# Mengonfigurasi pengaturan halaman Streamlit.
 st.set_page_config(page_title="Hungarian Heart Disease", page_icon=":heart:")
 
 # Page Title
+# Menampilkan judul utama dan informasi pengantar tentang aplikasi dan dataset.
 st.title("🫀 Hungarian Heart Disease")
 st.write("Predict heart disease using machine learning models.")
 st.write("This app is using Hungarian Heart Disease Dataset from UCI Machine Learning Repository. The dataset contains 294 observations and 14 attributes. The target variable is the presence or absence of heart disease in the patient. The dataset can be found [here](https://archive.ics.uci.edu/ml/datasets/heart+disease).")
 
-# Model Setup
+# ====== Model Setup ====
+#    - Mendefinisikan fungsi untuk memuat model machine learning yang telah dilatih sebelumnya.
+#    - Memungkinkan pengguna memilih model (KNN, Random Forest, XGBoost).
+#    - Memuat model yang dipilih dan menampilkan akurasinya.
 def load_model(model_file):
     loaded_model = pkl.load(open(model_file, "rb"))
     return loaded_model
@@ -44,6 +50,10 @@ st.write("Model Accuracy: " + str(model_acc) + "%" )
 tab1, tab2 = st.tabs(["Single Prediction", "Multi Prediction"])
 
 # Single Prediction
+#    - Memungkinkan pengguna memasukkan fitur pasien secara individual.
+#    - Menyediakan tombol untuk memprediksi penyakit jantung berdasarkan data yang dimasukkan.
+#    - Menampilkan data yang dimasukkan dan hasil prediksi.
+#    - Termasuk tombol reset untuk menghapus masukan.
 with tab1:
     # Tab 1 Header
     st.header("Single Prediction")
@@ -101,11 +111,15 @@ with tab1:
     # Reset Button
     if st.button("Reset", type="secondary", key="single-prediction-reset"):
         st.write("")
-    
+
+# Multi Prediction
+#    - Memungkinkan pengguna mengunggah file CSV dengan catatan pasien banyak.
+#    - Memprediksi penyakit jantung untuk semua pasien dalam file yang diunggah.
+#    - Menampilkan data yang dimasukkan dan hasil prediksi.
+#    - Termasuk tombol reset untuk menghapus masukan.
 with tab2:
     st.subheader("Multi Prediction")
     st.write("Predict heart disease for multiple patients")
-    
     # Upload File
     uploaded_file = st.file_uploader("Upload File", type=["csv"])
     if uploaded_file is not None:
