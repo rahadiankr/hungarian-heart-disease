@@ -6,7 +6,7 @@ import pandas as pd
 st.set_page_config(page_title="Hungarian Heart Disease", page_icon=":heart:")
 
 # Page Title
-st.title("Hungarian Heart Disease")
+st.title("🫀 Hungarian Heart Disease")
 st.write("Predict heart disease using machine learning")
 
 # Model Setup
@@ -25,6 +25,16 @@ elif model_select == "Random Forest":
 elif model_select == "XGBoost":
     model = load_model("models/model_xgb.pkl")
     
+if model_select == "KNN":
+    model_acc = 93.0
+elif model_select == "Random Forest":
+    model_acc = 92.0
+elif model_select == "XGBoost":
+    model_acc = 90.9
+    
+st.subheader("Model: " + model_select)
+st.subheader("Model Akurasi: " + str(model_acc))
+
 
 tab1, tab2 = st.tabs(["Single Prediction", "Multi Prediction"])
 with tab1:
@@ -68,13 +78,12 @@ with tab1:
         # Show data entry from user input
         st.write(data)
         # Predict
+        st.subheader("Prediction:")
         prediction = model.predict(data)[0]
         if prediction == 0:
-            prediction = ":ok: :green[No Heart Disease]"
+            st.success(':green[No Heart Disease]', icon="✅")
         else:
-            prediction = ":warning: :red[Heart Disease]"
-        st.subheader("Prediction:")
-        st.subheader(prediction)
+            st.error(':red[Heart Disease]', icon="🔴")
         
     if st.button("Reset", type="secondary", key="single-prediction-reset"):
         st.write("")
