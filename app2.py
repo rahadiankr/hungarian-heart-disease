@@ -37,9 +37,8 @@ elif model_select == "Random Forest":
 elif model_select == "XGBoost":
     model_acc = 90.9
     
-# Model Info
-st.caption("Model: " + model_select)
-st.caption("Model Akurasi: " + str(model_acc))
+# Model Accuracy
+st.write("Model Accuracy: " + str(model_acc) + "%" )
 
 # Tabs Setup for Single Prediction and Multi Prediction
 tab1, tab2 = st.tabs(["Single Prediction", "Multi Prediction"])
@@ -82,27 +81,27 @@ with tab1:
         }]
     data = pd.DataFrame(data)
     
-    # Data check if Null stop
-    if data.isnull().sum().sum() > 0:
-        st.warning('⚠️ Please fill in all the data.')
-    
-        
     # Predict Button
     if st.button("Predict", type="primary", key="single-prediction", disabled=False):
-        st.subheader("Data Input:")
-        # Show data entry from user input
-        st.write(data)
-        # Predict
-        st.subheader("Prediction:")
-        prediction = model.predict(data)[0]
-        if prediction == 0:
-            st.success(':green[No Heart Disease]', icon="✅")
+        # Check if all inputs are filled
+        data_null = data.isnull().sum()
+        if data_null.any():
+            st.warning('⚠️ Please fill all inputs.')
         else:
-            st.error(':red[Heart Disease]', icon="🔴")
-    # # Reset Button
-    # if st.button("Reset", type="secondary", key="single-prediction-reset"):
-    #     st.write("")
-        
+            st.subheader("Data Input:")
+            # Show data entry from user input
+            st.write(data)
+            # Predict
+            st.subheader("Prediction:")
+            prediction = model.predict(data)[0]
+            if prediction == 0:
+                st.success('No Heart Disease', icon="✅")
+            else:
+                st.error('Heart Disease', icon="🔴")
+    # Reset Button
+    if st.button("Reset", type="secondary", key="single-prediction-reset"):
+        st.write("")
+    
 with tab2:
     st.subheader("Multi Prediction")
     st.write("Predict heart disease for multiple patients")
